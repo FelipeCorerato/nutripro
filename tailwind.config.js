@@ -6,6 +6,7 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./node_modules/tw-elements/dist/js/**/*.js",
   ],
   theme: {
     extend: {
@@ -22,7 +23,8 @@ module.exports = {
       }
     },
   },
-  plugins: [require("daisyui")],
+  darkMode: "class",
+  plugins: [require("daisyui"), require("tw-elements/dist/plugin.cjs")],
   daisyui: {
     themes: ["light"], // true: all themes | false: only light + dark | array: specific themes like this ["light", "dark", "cupcake"]
     darkTheme: "dark", // name of one of the included themes for dark mode

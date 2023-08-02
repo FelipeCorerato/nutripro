@@ -1,104 +1,28 @@
-'use client';
-
-import { useState } from "react";
+import { getServerSession } from "next-auth";
 
 import { Page } from "@/app/components/Page";
-import { MacrosSection } from "@/app/components/MacrosSection";
-import { Modal, toggleModal } from "@/app/components/Modal";
-import { sendChatMessage, sendChatMessageV2 } from "@/services/chatgpt";
-import { removeUnity, toCalories, toGrams } from "@/utils/unities";
-import { enhanceWithTotalizers } from "@/utils/totalizers";
 
-import { vegetarianMenu as template } from '../showcase/templates/meal-plans';
-import { GtpData } from "./types";
+import { NutriAIContent } from "./components/NutriAIContent";
 
-export default function Home() {
-  const [gptData, setGptData] = useState<GtpData>({ data: enhanceWithTotalizers(template) });
-  const [modalData, setModalData] = useState<{ title: string; content: string; }>({ title: "", content: "" });
-
-  const handleGenerateMenuClick = async () => {
-    const message = "Monte uma dieta para ganho de massa para um homem de 21 anos que pesa 65kg e tem uma rotina consistente de atividades físicas. As unidades da resposta devem ser gramas e calorias e ela deve ser dada neste formato (JSON): { refeições: [{refeição: ,alimentos: [{alimento: ,quantidade: ,proteína: ,carboidrato: ,gordura: ,calorias: }]}]}";
-    const { response, chatHistory } = await sendChatMessage({ message });
-
-    setGptData({ data: enhanceWithTotalizers(response), chatHistory });
-  }
-
-  const handleChangeClick = async (food: string, meal: string) => {
-    const message = `Troque o item ${food} da refeição ${meal} por algo equivalente. As unidades da resposta devem ser gramas e calorias e ela deve ser apenas esse alimento neste formato (JSON): {alimento: ,quantidade: ,proteina: ,carboidrato: ,gordura: ,calorias: }.`;
-    const { response, chatHistory } = await sendChatMessage({ message, previousDialog: gptData?.chatHistory });
-
-    const selectedMealIndex = gptData.data.refeicoes.findIndex((m) => m.refeicao === meal);
-    const selectedFoodIndex = gptData.data.refeicoes[selectedMealIndex].alimentos.findIndex((f) => f.alimento === food);
-
-    gptData.data.refeicoes[selectedMealIndex].alimentos[selectedFoodIndex] = {
-      alimento: response.alimento,
-      calorias: toCalories(removeUnity(response.calorias)),
-      carboidrato: toGrams(removeUnity(response.carboidrato)),
-      gordura: toGrams(removeUnity(response.gordura)),
-      proteina: toGrams(removeUnity(response.proteina)),
-      quantidade: response.quantidade,
-    };
-    gptData.data = enhanceWithTotalizers(gptData.data);
-    
-    setGptData({ data: gptData.data, chatHistory });
-  }
-  
-  const handleDetailClick = async (food: string, meal: string) => {
-    const message = `Como essa comida "${food}" da refeição ${meal} deve ser preparada?`;
-    const { response, chatHistory } = await sendChatMessageV2({ message, previousDialog: gptData?.chatHistory });
-
-    setModalData({ title: food, content: response });
-    toggleModal({ id: "details-modal" });
-  }
+export default async function Home() {
+  const session = await getServerSession();
+  const canAccessNutriAI = session && session.user;
 
   return (
     <Page>
-      <span className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Gerar cardápio do dia</h1>
-        <button className="btn" onClick={handleGenerateMenuClick}>Gerar cardápio</button>
-      </span>
-      <p className="mt-4">
-        <span className="text-gray-500">Deixe a tecnologia trabalhar a seu favor para criar cardápios personalizados e equilibrados para as suas necessidades únicas. Nosso sistema inteligente utiliza algoritmos avançados para analisar suas preferências, metas de saúde e restrições alimentares, entregando cardápios deliciosos e nutricionalmente adequados. Simplifique o planejamento de refeições com nossa IA e descubra uma maneira inovadora de manter uma alimentação saudável e saborosa todos os dias. Experimente agora e alcance uma jornada de bem-estar guiada pela tecnologia!</span>
-      </p>
-      
-      <div className="my-10">
-        <h1 className="text-lg font-bold">Macros do dia</h1>
-        <span>Proteínas: {toGrams(gptData.data.totalizers.proteina)} </span>
-        <span>Carboidratos: {toGrams(gptData.data.totalizers.carboidrato)} </span>
-        <span>Gorduras: {toGrams(gptData.data.totalizers.gordura)} </span>
-        <span>Calorias: {toCalories(gptData.data.totalizers.calorias)} </span>
-      </div>
-
-      <>
-        {gptData.data.refeicoes.map((meal, index) => (
-          <div key={index} className="mt-8">
-            <h1 className="text-lg font-bold">{meal.refeicao}</h1>
-            {meal.alimentos.map((item, i) => (
-              <div key={i} className="mt-2">
-                <div className="flex justify-between">
-                  <h3 className="font-semibold">{item.alimento} - {item.quantidade}</h3>
-                  
-                  <div>
-                    <button onClick={() => handleChangeClick(item.alimento, meal.refeicao)} className="font-semibold">Trocar</button>
-                    <button onClick={() => handleDetailClick(item.alimento, meal.refeicao)} className="font-medium ml-4">Detalhar</button>
-                  </div>
-                </div>
-
-                <MacrosSection className="mt-1" macros={item} />
-              </div>
-            ))}
-          </div>
-        ))}
-      </>
-
-      <Modal id="details-modal">
-        <div className="modal-action flex items-center justify-between mt-0">
-          <h3 className="font-bold text-lg">{modalData.title}</h3>
-          <button className="btn">Fechar</button>
-        </div>
-
-        <p className="py-2">{modalData.content}</p>
-      </Modal>
+      {canAccessNutriAI ? (
+        <NutriAIContent />
+      ) : (
+        <section>
+          <h1 className="text-2xl font-bold">Login necessário</h1>
+          <p className="mt-4">
+            <span className="text-gray-500">Para acessar este recurso exclusivo, por favor, faça login em sua conta. O login permitirá que você desfrute de uma experiência personalizada e tenha acesso a funcionalidades adicionais. Se você ainda não tem uma conta, registre-se agora mesmo para aproveitar ao máximo nossos serviços e conteúdos. Estamos ansiosos para tê-lo(a) conosco!</span>
+          </p>
+          <p className="mt-2">
+            <span className="text-gray-500">Conecte-se pelo Google no botão do menu de navegação e comece a user este recurso.</span>
+          </p>
+        </section>
+      )}
     </Page>
-  )
+  );
 }
