@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { Page } from "@/app/components/Page";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <Page className='flex items-center justify-between h-[100%]'>
       <section className='max-w-2xl'>
@@ -13,7 +13,7 @@ export default function Home() {
         <p className='text-2xl mt-6'>Alcance suas metas de alimentação e saúde de maneira fácil e inteligente.</p>
       </section>
 
-      <Image src="/images/healthy-meal.svg" alt="Coding" height={650} width={650} />
+      <Image src="/images/healthy-meal.svg" alt="NutriPro" height={650} width={650} />
     </Page>
   );
 }

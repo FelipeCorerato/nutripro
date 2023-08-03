@@ -24,7 +24,7 @@ export function WaterSection() {
         <div className="flex flex-col justify-evenly">
           <div className="flex justify-evenly items-center">
             <span className="text-5xl font-bold cursor-pointer text-blue-300">-</span>
-            <Image alt="" src="/images/water-glass.png" width={70} height={70} />
+            <Image alt="water-glass" src="/images/water-glass.png" width={70} height={70} />
             <span className="text-5xl font-bold cursor-pointer text-blue-300">+</span>
           </div>
 

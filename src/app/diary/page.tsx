@@ -1,8 +1,11 @@
 import { Page } from "@/app/components/Page";
 import { WaterSection } from "./components/WaterSection";
 import { WeightSection } from "./components/WeightSection";
+import { loginIsRequiredServer } from "@/utils/auth";
 
-export default function Home() {
+export default async function DiaryPage() {
+  await loginIsRequiredServer();
+
   return (
     <Page>
       <WaterSection />

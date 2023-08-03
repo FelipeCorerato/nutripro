@@ -4,7 +4,7 @@ import { Page } from "@/app/components/Page";
 
 import { NutriAIContent } from "./components/NutriAIContent";
 
-export default async function Home() {
+export default async function NutriAIPage() {
   const session = await getServerSession();
   const canAccessNutriAI = session && session.user;
 

@@ -25,7 +25,7 @@ export async function AccountButton({ session }: { session: Session | null }) {
       href="/profile"
     >
       {session.user.image && (
-        <Image alt="" src={session.user.image} height={32} width={32} className="rounded-full" />
+        <Image alt="profile-picture" src={session.user.image} height={32} width={32} className="rounded-full" />
       )}
       
       <span className='ml-4'>{session.user.name}</span>

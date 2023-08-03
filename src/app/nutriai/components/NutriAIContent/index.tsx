@@ -78,8 +78,8 @@ export function NutriAIContent() {
                     <h3 className="font-semibold">{item.alimento} - {item.quantidade}</h3>
                     
                     <div>
-                      <button onClick={() => handleChangeClick(item.alimento, meal.refeicao)} className="font-semibold">Trocar</button>
-                      <button onClick={() => handleDetailClick(item.alimento, meal.refeicao)} className="font-medium ml-4">Detalhar</button>
+                      <button className="btn btn-outline btn-success btn-xs" onClick={() => handleChangeClick(item.alimento, meal.refeicao)}>Trocar</button>
+                      <button className="btn btn-outline btn-info ml-4 btn-xs" onClick={() => handleDetailClick(item.alimento, meal.refeicao)}>Detalhar</button>
                     </div>
                   </div>
 
