@@ -1,13 +1,14 @@
 'use client';
 
+import { useState } from "react";
+
 import { MacrosSection } from "@/app/components/MacrosSection";
 import { Modal, toggleModal } from "@/app/components/Modal";
 import { sendChatMessage, sendChatMessageV2 } from "@/services/chatgpt";
 import { enhanceWithTotalizers } from "@/utils/totalizers";
 import { removeUnity, toCalories, toGrams } from "@/utils/unities";
-import { useState } from "react";
-import { GtpData } from "../../types";
 
+import { GtpData } from "../../types";
 import { vegetarianMenu as template } from '../../../showcase/templates/meal-plans';
 
 export function NutriAIContent() {
@@ -50,7 +51,7 @@ export function NutriAIContent() {
   }
 
   return(
-    <>
+    <section className="border p-6 rounded-lg">
       <span className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Gerar cardápio do dia</h1>
         <button className="btn" onClick={handleGenerateMenuClick}>Gerar cardápio</button>
@@ -59,7 +60,7 @@ export function NutriAIContent() {
         <span className="text-gray-500">Deixe a tecnologia trabalhar a seu favor para criar cardápios personalizados e equilibrados para as suas necessidades únicas. Nosso sistema inteligente utiliza algoritmos avançados para analisar suas preferências, metas de saúde e restrições alimentares, entregando cardápios deliciosos e nutricionalmente adequados. Simplifique o planejamento de refeições com nossa IA e descubra uma maneira inovadora de manter uma alimentação saudável e saborosa todos os dias. Experimente agora e alcance uma jornada de bem-estar guiada pela tecnologia!</span>
       </p>
 
-      <section className="my-10">
+      <div className="my-10">
         <div>
           <h1 className="text-lg font-bold">Macros do dia</h1>
           <span>Proteínas: {toGrams(gptData.data.totalizers.proteina)} </span>
@@ -98,7 +99,7 @@ export function NutriAIContent() {
 
           <p className="py-2">{modalData.content}</p>
         </Modal>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

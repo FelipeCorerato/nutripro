@@ -20,7 +20,14 @@ module.exports = {
       },
       fontFamily: {
         poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
-      }
+      },
+      screens: {
+        mobile: { 'max': '767px' },  
+        tablet: { 'min': '768px', 'max': '1023px' },  
+        laptop: { 'min': '1024px', 'max': '1279px' },
+        desktop: { 'min': '1280px', 'max': '1535px' },
+        wide: { 'min': '1536px' },
+      },  
     },
   },
   darkMode: "class",

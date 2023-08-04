@@ -1,10 +1,16 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { FiSettings } from 'react-icons/fi';
-import dynamic from "next/dynamic";
+
+import { CircularLoading } from "@/app/components/CircularLoading";
 
 const DynamicBarChart = dynamic(() => import("@/app/components/BarChart"), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => (
+    <div className="flex items-center justify-center">
+      <CircularLoading color="text-blue-300" />
+    </div>
+  ),
 });
 
 export function WaterSection() {
@@ -18,8 +24,8 @@ export function WaterSection() {
         <span className="text-gray-500">Acompanhe sua hidratação diária de forma simples e motivadora. Registre o consumo de água, defina metas, receba lembretes e visualize seu progresso. Cuide da sua saúde com facilidade!</span>
       </p>
 
-      <div className="grid grid-cols-2 mt-10 gap-x-8">
-        <DynamicBarChart chartName="water-consumption" />
+      <div className="grid grid-cols-2 mt-10 gap-x-8 mobile:flex mobile:flex-col-reverse tablet:flex tablet:flex-col-reverse">
+        <DynamicBarChart chartName="water-consumption" className="mobile:mt-8 tablet:mt-8" />
 
         <div className="flex flex-col justify-evenly">
           <div className="flex justify-evenly items-center">
@@ -41,7 +47,6 @@ export function WaterSection() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

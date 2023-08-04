@@ -1,10 +1,11 @@
 "use client";
 
-import { Modal, toggleModal } from "@/app/components/Modal";
-import { Box } from "../Box";
 import { useState } from "react";
 
+import { Modal, toggleModal } from "@/app/components/Modal";
+
 import { chickenWithPotatoAndAspargusRecipe, chickenWrapRecipe, omeletWithCheeseRecipe, proteinShakeRecipe, quinoaSaladRecipe, salmonPokeRecipe, salmonWithQuinoaAndVegetablesRecipe, smoothieDetoxRecipe } from "../../templates/recipes";
+import { Box } from "../Box";
 
 export function RecipesSection() {
   const [recipeModalData, setRecipeModalData] = useState<{ title: string; content: string; }>({ title: "", content: "" });
@@ -16,7 +17,7 @@ export function RecipesSection() {
 
   return(
     <>
-      <section className="mt-10">
+      <section className="mt-10 border p-6 rounded-lg">
         <h1 className="text-2xl font-bold">Receitas</h1>
         <p className="mt-4">
           <span className="text-gray-500">Descubra uma coleção irresistível de Receitas Saudáveis, especialmente desenvolvidas por nutricionistas especializados. De pratos principais a sobremesas deliciosas, encontre opções para todos os gostos e restrições alimentares. Cozinhe com facilidade e aproveite uma alimentação equilibrada, saborosa e nutritiva em cada mordida!</span>

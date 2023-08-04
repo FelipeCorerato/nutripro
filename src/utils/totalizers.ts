@@ -1,5 +1,7 @@
-import { MealsResponse, MealsResponseEnhancedWithTotalizers } from "@/types/types";
 import { isNumber } from "lodash";
+
+import { MealsResponse, MealsResponseEnhancedWithTotalizers } from "@/types/types";
+
 import { removeUnity } from "./unities";
 
 export const enhanceWithTotalizers = (meals: MealsResponse): MealsResponseEnhancedWithTotalizers => {

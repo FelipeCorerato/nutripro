@@ -1,8 +1,9 @@
 'use client';
 
-import { signOut } from "next-auth/react";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
+
 import { Input } from "../Input";
 
 interface UserDataSectionProps {

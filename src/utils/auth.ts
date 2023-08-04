@@ -1,7 +1,8 @@
-import { authConfigOptions } from "@/constants/auth";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
+
+import { authConfigOptions } from "@/constants/auth";
 
 export async function loginIsRequiredServer() {
   const session = await getServerSession(authConfigOptions);

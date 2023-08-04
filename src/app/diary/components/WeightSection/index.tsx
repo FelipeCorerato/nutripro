@@ -1,9 +1,15 @@
 import dynamic from "next/dynamic";
 import { FiSettings } from "react-icons/fi";
 
+import { CircularLoading } from "@/app/components/CircularLoading";
+
 const DynamicLineChart = dynamic(() => import("@/app/components/LineChart"), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => (
+    <div className="flex items-center justify-center">
+      <CircularLoading />
+    </div>
+  ),
 });
 
 export function WeightSection() {
@@ -17,7 +23,7 @@ export function WeightSection() {
         <span className="text-gray-500">Acompanhe suas mudanças ao longo do tempo e mantenha-se motivado para alcançar seus objetivos de saúde e bem-estar. Registre seu peso regularmente, visualize gráficos de progresso e ajuste suas metas conforme necessário. Cuide de si mesmo com nosso acompanhamento de peso prático e intuitivo.</span>
       </p>
 
-      <div className="mt-10 grid grid-cols-2 gap-x-8">
+      <div className="mt-10 grid grid-cols-2 gap-x-8 mobile:flex tablet:flex mobile:flex-col tablet:flex-col">
         <div className="grid gap-6 grid-cols-2 grid-rows-2">
           <div className="border rounded-lg flex flex-col items-center justify-center">
               <span className="font-semibold text-xl">62.3kg</span>
@@ -40,7 +46,7 @@ export function WeightSection() {
           </div>
         </div>
 
-        <DynamicLineChart chartName="weight-history" />
+        <DynamicLineChart chartName="weight-history" className="mobile:mt-8 tablet:mt-8" />
       </div>
     </section>
   );

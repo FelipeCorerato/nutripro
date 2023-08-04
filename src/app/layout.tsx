@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'NutriPro',
-  description: 'AI menu generator app',
+  description: 'Alimentação com auxílio de inteligência artificial',
   icons: {
     icon: '/favicons/favicon.ico',
     shortcut: '/favicons/favicon.ico',

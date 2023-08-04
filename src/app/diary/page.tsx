@@ -1,7 +1,8 @@
 import { Page } from "@/app/components/Page";
+import { loginIsRequiredServer } from "@/utils/auth";
+
 import { WaterSection } from "./components/WaterSection";
 import { WeightSection } from "./components/WeightSection";
-import { loginIsRequiredServer } from "@/utils/auth";
 
 export default async function DiaryPage() {
   await loginIsRequiredServer();

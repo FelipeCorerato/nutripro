@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Box } from "../Box";
-import { ModalContentType } from "../../types";
-import { MealsResponseEnhancedWithTotalizers } from "@/types/types";
-import { cheaperMenu, cholesterolMenu, diabetesMenu, lowCarboMenu, lowSugarMenu, veganMenu, vegetarianMenu } from "../../templates/meal-plans";
-import { Modal, toggleModal } from "@/app/components/Modal";
+
 import { MacrosSection } from "@/app/components/MacrosSection";
+import { Modal, toggleModal } from "@/app/components/Modal";
+import { MealsResponseEnhancedWithTotalizers } from "@/types/types";
+
+import { cheaperMenu, cholesterolMenu, diabetesMenu, lowCarboMenu, lowSugarMenu, veganMenu, vegetarianMenu } from "../../templates/meal-plans";
+import { ModalContentType } from "../../types";
+import { Box } from "../Box";
 
 export function PlansSection() {
   const [planModalData, setPlanModalData] = useState<ModalContentType>({ title: "", menu: cheaperMenu });
@@ -18,7 +20,7 @@ export function PlansSection() {
 
   return(
     <>
-      <section>
+      <section className="border p-6 rounded-lg">
         <h1 className="text-2xl font-bold">Planos de alimentação</h1>
         <p className="mt-4">
           <span className="text-gray-500">Aqui você encontrará um conjunto de planos cuidadosamente elaborados por nutricionistas, personalizados para atender às suas necessidades específicas. Alcance seus objetivos de saúde com orientações alimentares balanceadas e deliciosas, criadas para proporcionar uma jornada nutricional positiva e sustentável. Escolha o plano perfeito para você e embarque em uma jornada rumo a uma vida mais saudável e plena.</span>
