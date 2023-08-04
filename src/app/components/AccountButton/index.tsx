@@ -37,7 +37,8 @@ export async function AccountButton({ session }: { session: Session | null }) {
       onClick={() => signIn('google')}
     >
       <FaGoogle color="#3e3e3e" />
-      <span className='ml-4'>Entrar com Google</span>
+      <span className='ml-4 mobile:hidden tablet:hidden'>Entrar com Google</span>
+      <span className='ml-4 laptop:hidden desktop:hidden wide:hidden'>Entrar</span>
     </button>
   );
 }

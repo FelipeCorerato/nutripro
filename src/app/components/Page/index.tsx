@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Page = ({ children, className = "" }: Props) => {
-  const cn = `mobile:px-16 tablet:px-16 px-24 pb-8 mt-10 ${className}`;
+  const cn = `mobile:px-8 tablet:px-8 px-24 pb-8 mt-10 mobile:mt-6 tablet:mt-6 ${className}`;
   return (
     <main className="flex flex-col pb-24 h-[100vh]">
       <Navbar />
