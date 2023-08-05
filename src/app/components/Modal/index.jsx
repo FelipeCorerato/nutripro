@@ -1,6 +1,10 @@
-export const toggleModal = ({ id }) => {
+export const openModal = ({ id }) => {
   window[id].showModal();
 };
+
+export const closeModal = ({ id }) => {
+  window[id].close();
+}
 
 export const Modal = ({ children, id }) => {
   return(

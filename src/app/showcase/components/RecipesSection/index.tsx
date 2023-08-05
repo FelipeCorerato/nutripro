@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { FiX } from "react-icons/fi";
 
-import { Modal, toggleModal } from "@/app/components/Modal";
+import { Modal, openModal } from "@/app/components/Modal";
 
 import { chickenWithPotatoAndAspargusRecipe, chickenWrapRecipe, omeletWithCheeseRecipe, proteinShakeRecipe, quinoaSaladRecipe, salmonPokeRecipe, salmonWithQuinoaAndVegetablesRecipe, smoothieDetoxRecipe } from "../../templates/recipes";
 import { Box } from "../Box";
@@ -12,7 +13,7 @@ export function RecipesSection() {
 
   const handleRecipeBoxClick = async ({ title, content}: { title: string; content: string; }) => {
     setRecipeModalData({ title, content });
-    toggleModal({ id: "recipes-modal" })
+    openModal({ id: "recipes-modal" })
   }
 
   return(
@@ -38,7 +39,9 @@ export function RecipesSection() {
       <Modal id="recipes-modal">
         <div className="modal-action flex items-center justify-between mt-0">
           <h3 className="font-bold text-lg">{recipeModalData.title}</h3>
-          <button className="btn">Close</button>
+          <button className="btn btn-square btn-ghost">
+            <FiX size={20} />
+          </button>
         </div>
         
         <p className="py-2">{recipeModalData.content}</p>

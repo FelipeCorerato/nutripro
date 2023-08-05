@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { FiX } from "react-icons/fi";
 
 import { MacrosSection } from "@/app/components/MacrosSection";
-import { Modal, toggleModal } from "@/app/components/Modal";
+import { Modal, openModal } from "@/app/components/Modal";
 import { MealsResponseEnhancedWithTotalizers } from "@/types/types";
 
 import { cheaperMenu, cholesterolMenu, diabetesMenu, lowCarboMenu, lowSugarMenu, veganMenu, vegetarianMenu } from "../../templates/meal-plans";
@@ -15,7 +16,7 @@ export function PlansSection() {
 
   const handlePlanBoxClick = (title: string, menu: MealsResponseEnhancedWithTotalizers) => {
     setPlanModalData({title, menu});
-    toggleModal({ id: "plains-modal" });
+    openModal({ id: "plains-modal" });
   }
 
   return(
@@ -40,7 +41,9 @@ export function PlansSection() {
       <Modal id="plains-modal">
         <div className="modal-action flex items-center justify-between mt-0">
           <h3 className="font-bold text-lg">{planModalData.title}</h3>
-          <button className="btn">Close</button>
+          <button className="btn btn-square btn-ghost">
+            <FiX size={20} />
+          </button>
         </div>
         
         <p className="py-2">

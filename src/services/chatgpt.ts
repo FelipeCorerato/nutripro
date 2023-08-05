@@ -17,7 +17,7 @@ const getStringifiedAnswerFromApiChatCompletionResponse = (data: CreateChatCompl
   return data.choices[0].message?.content as string;
 };
 
-interface SendMessageReturnType {
+export interface SendMessageReturnType {
   response: any;
   chatHistory: ChatCompletionRequestMessage[];
 }

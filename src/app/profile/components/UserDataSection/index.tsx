@@ -4,7 +4,7 @@ import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
 
-import { Input } from "../Input";
+import { Input } from "@/app/components/Input";
 
 interface UserDataSectionProps {
   userData: {
@@ -26,8 +26,8 @@ export function UserDataSection({ userData }: UserDataSectionProps) {
         </div>
       </div>
 
-      <div className="mt-8">
-        <Input label="Email" value={userData.email} icon={<FaGoogle color="#3e3e3e" />} disabled />
+      <div className="mt-8 flex flex-col items-center">
+        <Input label="Email" type="email" value={userData.email} icon={<FaGoogle color="#3e3e3e" />} disabled />
         <Input label="Altura" value="1,75m" readonly />
         <Input label="Peso" value="65kg" readonly />
         <Input label="Data de nascimento" value="20/03/2003" readonly />

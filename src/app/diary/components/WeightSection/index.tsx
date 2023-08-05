@@ -6,7 +6,7 @@ import { CircularLoading } from "@/app/components/CircularLoading";
 const DynamicLineChart = dynamic(() => import("@/app/components/LineChart"), {
   ssr: false,
   loading: () => (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center mobile:mt-8 tablet:mt-8">
       <CircularLoading />
     </div>
   ),
@@ -27,7 +27,8 @@ export function WeightSection() {
         <div className="grid gap-6 grid-cols-2 grid-rows-2">
           <div className="border rounded-lg flex flex-col items-center justify-center">
               <span className="font-semibold text-xl">62.3kg</span>
-              <span className="text-gray-400">Peso atual (2 ago.)</span>
+              <span className="text-gray-400 mobile:hidden tablet:hidden">Peso atual (2 ago.)</span>
+              <span className="text-gray-400 laptop:hidden desktop:hidden wide:hidden">2 ago.</span>
           </div>
           <div className="border rounded-lg flex flex-col items-center justify-center">
               <span className="font-semibold text-xl">70kg</span>
