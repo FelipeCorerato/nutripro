@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export interface BarChartProps {
   chartName: string;
@@ -8,12 +8,14 @@ export interface BarChartProps {
 }
 
 export default function BarChart({ chartName, className }: BarChartProps) {
+  const chartRef = useRef<any>(null);
+
   useEffect(() => {
     const init = async () => {
       const { initTE, Chart } = await import("tw-elements");
       initTE({ Chart });
       
-      new Chart(
+      chartRef.current = new Chart(
         document.getElementById(`bar-chart-${chartName}`), {
           type: 'bar',
           data: {
@@ -34,6 +36,12 @@ export default function BarChart({ chartName, className }: BarChartProps) {
     };
 
     init();
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
   }, [chartName]);
 
   const cn = `overflow-hidden ${className}`;
