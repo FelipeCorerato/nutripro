@@ -24,7 +24,7 @@ export const enhanceWithTotalizers = (meals: MealsResponse): MealsResponseEnhanc
     carboidrato: prev.carboidrato + curr.carboidrato,
     gordura: prev.gordura + curr.gordura,
     proteina: prev.proteina + curr.proteina,
-  }));
+  }), initialValue);
 
   return {
     ...meals,
