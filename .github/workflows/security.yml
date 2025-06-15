@@ -1,3 +1,4 @@
+---
 name: Security & Dependency Check
 
 on:
@@ -5,39 +6,39 @@ on:
     # Roda toda segunda-feira às 9h UTC
     - cron: '0 9 * * 1'
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   security:
     name: Security Audit
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run security audit
         run: npm audit --audit-level=high
         continue-on-error: true
-      
+
       - name: Run dependency check
         uses: ossf/scorecard-action@v2.3.1
         with:
           results_file: results.sarif
           results_format: sarif
           publish_results: true
-      
+
       - name: Upload SARIF results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
@@ -46,20 +47,20 @@ jobs:
   outdated:
     name: Check Outdated Dependencies
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'npm'
-      
+
       - name: Check for outdated packages
         run: npm outdated || true
-      
+
       - name: Create issue for outdated dependencies
         if: github.event_name == 'schedule'
         uses: actions/github-script@v7
@@ -67,17 +68,19 @@ jobs:
           script: |
             const { execSync } = require('child_process');
             try {
-              const outdated = execSync('npm outdated --json', { encoding: 'utf8' });
+              const outdated = execSync('npm outdated --json', {
+                encoding: 'utf8'
+              });
               const packages = JSON.parse(outdated);
-              
+
               if (Object.keys(packages).length > 0) {
-                const body = `## 📦 Dependências desatualizadas encontradas\n\n` +
-                  `As seguintes dependências estão desatualizadas:\n\n` +
-                  Object.entries(packages).map(([name, info]) => 
-                    `- **${name}**: ${info.current} → ${info.latest}`
+                const body = '## 📦 Dependências desatualizadas encontradas\n\n' +
+                  'As seguintes dependências estão desatualizadas:\n\n' +
+                  Object.entries(packages).map(([name, info]) =>
+                    '- **' + name + '**: ' + info.current + ' → ' + info.latest
                   ).join('\n') +
-                  `\n\n⚠️ Considere atualizar essas dependências para manter a segurança e performance.`;
-                
+                  '\n\n⚠️ Considere atualizar essas dependências para manter a segurança.';
+
                 github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
