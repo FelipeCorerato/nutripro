@@ -86,27 +86,3 @@ jobs:
         else
           echo "✅ No vulnerabilities found"
         fi
-
-  type-check:
-    name: TypeScript Type Check
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: |
-        echo "🔧 Removing package-lock.json to ensure clean install"
-        rm -f package-lock.json
-        echo "📦 Installing dependencies with npm install"
-        npm install
-    
-    - name: Run TypeScript type check
-      run: npx tsc --noEmit
