@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 
 export interface LineChartProps {
-  chartName: string;
-  className?: string;
+  readonly chartName: string;
+  readonly className?: string;
 }
 
 export default function LineChart({ chartName, className }: LineChartProps) {
@@ -13,7 +13,7 @@ export default function LineChart({ chartName, className }: LineChartProps) {
       const { initTE, Chart } = await import("tw-elements");
       initTE({ Chart });
       
-      new Chart(
+      const chartInstance = new Chart(
         document.getElementById(`line-chart-${chartName}`), {
           type: 'line',
           data: {
@@ -42,6 +42,9 @@ export default function LineChart({ chartName, className }: LineChartProps) {
           },
         },
       );
+      
+      // Chart instance is stored for potential future use (cleanup, updates, etc.)
+      console.debug('LineChart initialized:', chartInstance);
     };
 
     init();
