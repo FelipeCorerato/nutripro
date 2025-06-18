@@ -19,6 +19,10 @@ const customJestConfig = {
     '!src/**/types/**',
     '!src/**/templates/**',
     '!src/constants/**',
+    '!src/app/layout.tsx',
+    '!src/app/**/layout.tsx',
+    '!src/app/page.tsx',
+    '!src/app/**/page.tsx',
   ],
   coverageDirectory: 'coverage',
   coverageReporters: [
