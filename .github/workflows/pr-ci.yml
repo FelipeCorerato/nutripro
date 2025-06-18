@@ -47,9 +47,54 @@ jobs:
           exit 1
         fi
 
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        echo "🔧 Removing package-lock.json to ensure clean install"
+        rm -f package-lock.json
+        echo "📦 Installing dependencies with npm install"
+        npm install
+    
+    - name: Run Tests
+      run: |
+        echo "🧪 Running unit tests with Jest"
+        npm test
+    
+    - name: Generate Test Coverage
+      run: |
+        echo "📊 Generating test coverage report"
+        npm run test:coverage
+      continue-on-error: true
+    
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-report
+        path: coverage/
+        retention-days: 30
+
   security-check:
     name: Security Audit
     runs-on: ubuntu-latest
+    needs: [lint-and-build, test]
     
     steps:
     - name: Checkout code
