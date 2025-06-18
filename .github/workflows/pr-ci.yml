@@ -91,10 +91,53 @@ jobs:
         path: coverage/
         retention-days: 30
 
+  sonarqube:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for better analysis
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        echo "🔧 Removing package-lock.json to ensure clean install"
+        rm -f package-lock.json
+        echo "📦 Installing dependencies with npm install"
+        npm install
+    
+    - name: Run Tests with Coverage
+      run: |
+        echo "🧪 Running tests with coverage for SonarQube"
+        npm run test:coverage
+    
+    - name: Download Coverage Report
+      uses: actions/download-artifact@v4
+      continue-on-error: true
+      with:
+        name: coverage-report
+        path: coverage/
+    
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v2
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
   security-check:
     name: Security Audit
     runs-on: ubuntu-latest
-    needs: [lint-and-build, test]
+    needs: [lint-and-build, test, sonarqube]
     
     steps:
     - name: Checkout code
