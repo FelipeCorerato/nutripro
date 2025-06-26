@@ -7,7 +7,8 @@ export interface BarChartProps {
   className?: string;
 }
 
-export default function BarChart({ chartName, className }: BarChartProps) {
+const BarChart = (props: Readonly<BarChartProps>) => {
+  const { chartName, className } = props;
   const chartRef = useRef<any>(null);
 
   useEffect(() => {
@@ -51,4 +52,6 @@ export default function BarChart({ chartName, className }: BarChartProps) {
       <canvas id={`bar-chart-${chartName}`} />
     </div>
   );
-}
+};
+
+export default BarChart;

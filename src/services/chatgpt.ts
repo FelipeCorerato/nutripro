@@ -18,94 +18,96 @@ const getStringifiedAnswerFromApiChatCompletionResponse = (data: CreateChatCompl
 };
 
 export interface SendMessageReturnType {
-  response: any;
+  response: unknown;
   chatHistory: ChatCompletionRequestMessage[];
 }
 export const sendChatMessage = async (props: { previousDialog?: ChatCompletionRequestMessage[], message: string }): Promise<SendMessageReturnType> => {
-  const previousDialog: ChatCompletionRequestMessage[] = props.previousDialog ? props.previousDialog : [
-    // {
-    //   role: "system",
-    //   content: "Você é um especialista em nutrição. Você também se comporta como uma API que apenas responde num formato JSON especificado.",
-    // }
-  ];
-  
-  const { data: gptResponse } = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      ...previousDialog,
-      {
-        role: "user",
-        content: props.message,
-      }
-    ],
-  });
-
-  const rawContent = getStringifiedAnswerFromApiChatCompletionResponse(gptResponse);
-  const json = JSON.parse(rawContent);
-
-  return {
-    response: json,
-    chatHistory: [
-      ...previousDialog,
-      {
-        role: "user",
-        content: props.message,
-      },
-      {
-        role: "assistant",
-        content: JSON.stringify(json),
-      },
-    ],
-  };
+  try {
+    const previousDialog: ChatCompletionRequestMessage[] = props.previousDialog ? props.previousDialog : [];
+    const { data: gptResponse } = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        ...previousDialog,
+        {
+          role: "user",
+          content: props.message,
+        }
+      ],
+    });
+    const rawContent = getStringifiedAnswerFromApiChatCompletionResponse(gptResponse);
+    const json = JSON.parse(rawContent);
+    return {
+      response: json,
+      chatHistory: [
+        ...previousDialog,
+        {
+          role: "user",
+          content: props.message,
+        },
+        {
+          role: "assistant",
+          content: rawContent,
+        },
+      ],
+    };
+  } catch (error) {
+    return {
+      response: { error: (error as Error).message },
+      chatHistory: [],
+    };
+  }
 };
 
 export const sendChatMessageV2 = async (props: { previousDialog?: ChatCompletionRequestMessage[], message: string }): Promise<SendMessageReturnType> => {
-  const previousDialog: ChatCompletionRequestMessage[] = props.previousDialog ? props.previousDialog : [
-    // {
-    //   role: "system",
-    //   content: "Você é um especialista em nutrição. Você também se comporta como uma API que apenas responde num formato JSON especificado.",
-    // }
-  ];
-  
-  const { data: gptResponse } = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      ...previousDialog,
-      {
-        role: "user",
-        content: props.message,
-      }
-    ],
-  });
-
-  const response = getStringifiedAnswerFromApiChatCompletionResponse(gptResponse);
-
-  return {
-    response,
-    chatHistory: [
-      ...previousDialog,
-      {
-        role: "user",
-        content: props.message,
-      },
-      {
-        role: "assistant",
-        content: JSON.stringify(response),
-      },
-    ],
-  };
+  try {
+    const previousDialog: ChatCompletionRequestMessage[] = props.previousDialog ? props.previousDialog : [];
+    const { data: gptResponse } = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        ...previousDialog,
+        {
+          role: "user",
+          content: props.message,
+        }
+      ],
+    });
+    const response = getStringifiedAnswerFromApiChatCompletionResponse(gptResponse);
+    return {
+      response,
+      chatHistory: [
+        ...previousDialog,
+        {
+          role: "user",
+          content: props.message,
+        },
+        {
+          role: "assistant",
+          content: response,
+        },
+      ],
+    };
+  } catch (error) {
+    return {
+      response: { error: (error as Error).message },
+      chatHistory: [],
+    };
+  }
 };
 
 export const sendMessage = async (props: { message: string }): Promise<Omit<SendMessageReturnType, "chatHistory">> => {
-  const { data: gptResponse } = await openai.createCompletion({
-    model: "gpt-3.5-turbo",
-    prompt: props.message,
-  });
-
-  const rawContent = getStringifiedAnswerFromApiCompletionResponse(gptResponse);
-  const json = JSON.parse(rawContent);
-
-  return {
-    response: json,
-  };
+  try {
+    const { data: gptResponse } = await openai.createCompletion({
+      model: "gpt-3.5-turbo",
+      prompt: props.message,
+    });
+    const rawContent = getStringifiedAnswerFromApiCompletionResponse(gptResponse);
+    const json = JSON.parse(rawContent);
+    return {
+      response: json,
+    };
+  } catch (error) {
+    return {
+      response: { error: (error as Error).message },
+    };
+  }
 };

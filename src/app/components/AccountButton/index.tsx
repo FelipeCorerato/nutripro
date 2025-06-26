@@ -28,7 +28,7 @@ export async function AccountButton({ session }: { session: Session | null }) {
         <Image alt="profile-picture" src={session.user.image} height={32} width={32} className="rounded-full" />
       )}
       
-      <span className='ml-4 mobile:hidden tablet:hidden'>{session.user.name}</span>
+      <span className='ml-4 mobile:hidden tablet:hidden'>{session.user?.name}</span>
     </Link>
   ):(
     <button 

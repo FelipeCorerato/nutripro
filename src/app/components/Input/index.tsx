@@ -1,12 +1,12 @@
 interface InputProps {
-  value?: string | null;
-  readonly?: boolean;
-  disabled?: boolean;
-  label?: string;
-  icon?: React.ReactNode;
-  className?: string;
-  type?: React.HTMLInputTypeAttribute;
-  children?: React.ReactNode;
+  readonly value?: string | null;
+  readonly readonly?: boolean;
+  readonly disabled?: boolean;
+  readonly label?: string;
+  readonly icon?: React.ReactNode;
+  readonly className?: string;
+  readonly type?: React.HTMLInputTypeAttribute;
+  readonly children?: React.ReactNode;
 }
 
 export function Input({ value, readonly, label, icon, disabled, className, type, children }: InputProps) {
