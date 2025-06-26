@@ -38,7 +38,13 @@ const customJestConfig = {
       lines: 0,
       statements: 0
     }
-  }
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(jose)/)',
+  ],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+  },
 }
 
 // createJestConfig é exportado dessa forma para garantir que next/jest possa carregar a configuração do Next.js, que é assíncrona
