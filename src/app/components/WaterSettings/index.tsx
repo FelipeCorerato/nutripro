@@ -24,7 +24,7 @@ export function WaterSettings() {
           <div className="form-control mt-6">
             <label className="cursor-pointer label">
               <span className="label-text">Usar recomendação</span>
-              <input type="checkbox" checked className="checkbox checkbox-success" />
+              <input type="checkbox" checked readOnly className="checkbox checkbox-success" />
             </label>
           </div>
 

@@ -12,6 +12,7 @@ import { removeUnity, toCalories, toGrams } from "@/utils/unities";
 
 import { GtpData } from "../../types";
 import { vegetarianMenu as template } from '../../../showcase/templates/meal-plans';
+import { MealsResponse } from '@/types/types';
 
 export function NutriAIContent() {
   const [gptData, setGptData] = useState<GtpData>({ data: enhanceWithTotalizers(template) });
@@ -26,7 +27,7 @@ export function NutriAIContent() {
       return response;
     });
 
-    setGptData({ data: enhanceWithTotalizers(response), chatHistory });
+    setGptData({ data: enhanceWithTotalizers(response as MealsResponse), chatHistory });
   }
 
   const handleChangeClick = async (food: string, meal: string) => {
@@ -41,13 +42,14 @@ export function NutriAIContent() {
     const selectedMealIndex = gptData.data.refeicoes.findIndex((m) => m.refeicao === meal);
     const selectedFoodIndex = gptData.data.refeicoes[selectedMealIndex].alimentos.findIndex((f) => f.alimento === food);
 
+    const foodResponse = response as MealsResponse['refeicoes'][0]['alimentos'][0];
     gptData.data.refeicoes[selectedMealIndex].alimentos[selectedFoodIndex] = {
-      alimento: response.alimento,
-      calorias: toCalories(removeUnity(response.calorias)),
-      carboidrato: toGrams(removeUnity(response.carboidrato)),
-      gordura: toGrams(removeUnity(response.gordura)),
-      proteina: toGrams(removeUnity(response.proteina)),
-      quantidade: response.quantidade,
+      alimento: foodResponse.alimento,
+      calorias: toCalories(removeUnity(foodResponse.calorias)),
+      carboidrato: toGrams(removeUnity(foodResponse.carboidrato)),
+      gordura: toGrams(removeUnity(foodResponse.gordura)),
+      proteina: toGrams(removeUnity(foodResponse.proteina)),
+      quantidade: foodResponse.quantidade,
     };
     gptData.data = enhanceWithTotalizers(gptData.data);
     
@@ -63,7 +65,7 @@ export function NutriAIContent() {
       return response;
     });
 
-    setModalData({ title: food, content: response });
+    setModalData({ title: food, content: response as string });
     openModal({ id: "details-modal" });
   }
 

@@ -46,7 +46,7 @@ export function PlansSection() {
           </button>
         </div>
         
-        <p className="py-2">
+        <div className="py-2">
           {planModalData.menu.refeicoes.map((meal, index) => (
             <div key={index} className="mt-4">
               <h4 className="text-lg font-bold">{meal.refeicao}</h4>
@@ -58,7 +58,7 @@ export function PlansSection() {
               ))}
             </div>
           ))}
-        </p>
+        </div>
       </Modal>
     </>
   );
