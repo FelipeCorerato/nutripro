@@ -7,9 +7,10 @@ interface InputProps {
   readonly className?: string;
   readonly type?: React.HTMLInputTypeAttribute;
   readonly children?: React.ReactNode;
+  readonly onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export function Input({ value, readonly, label, icon, disabled, className, type, children }: InputProps) {
+export function Input({ value, readonly, label, icon, disabled, className, type, children, onChange }: InputProps) {
   return(
     <div className="form-control w-full max-w-lg">
       <label className="label">
@@ -29,6 +30,7 @@ export function Input({ value, readonly, label, icon, disabled, className, type,
         readOnly={readonly} 
         disabled={disabled} 
         className="input input-sm input-bordered w-full max-w-lg" 
+        onChange={onChange}
       />
 
       {children && (

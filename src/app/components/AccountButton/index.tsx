@@ -15,7 +15,7 @@ export async function AccountButtonLoading() {
   );
 }
 
-export async function AccountButton({ session }: { session: Session | null }) {
+export function AccountButton({ session }: { session: Session | null }) {
   const buttonClassName = "h-12 shadow flex justify-center ml-auto items-center border-gray-300 border rounded-3xl px-6 font-medium";
 
   return session && session.user ? (

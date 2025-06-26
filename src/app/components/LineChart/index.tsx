@@ -44,7 +44,7 @@ export default function LineChart({ chartName, className }: LineChartProps) {
       );
       
       // Chart instance is stored for potential future use (cleanup, updates, etc.)
-      console.debug('LineChart initialized:', chartInstance);
+      // console.debug('LineChart initialized:', chartInstance);
     };
 
     init();
