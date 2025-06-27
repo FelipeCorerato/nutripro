@@ -20,40 +20,44 @@ export function NutriAIContent() {
 
   const handleGenerateMenuClick = async () => {
     openModal({ id: "loading-modal" });
-
-    const message = "Monte uma dieta para ganho de massa para um homem de 21 anos que pesa 65kg e tem uma rotina consistente de atividades físicas. As unidades da resposta devem ser gramas e calorias e ela deve ser dada neste formato (JSON): { refeições: [{refeição: ,alimentos: [{alimento: ,quantidade: ,proteína: ,carboidrato: ,gordura: ,calorias: }]}]}";
-    const { response, chatHistory } = await sendChatMessage({ message }).then((response) => {
+    try {
+      const message = "Monte uma dieta para ganho de massa para um homem de 21 anos que pesa 65kg e tem uma rotina consistente de atividades físicas. As unidades da resposta devem ser gramas e calorias e ela deve ser dada neste formato (JSON): { refeições: [{refeição: ,alimentos: [{alimento: ,quantidade: ,proteína: ,carboidrato: ,gordura: ,calorias: }]}]}";
+      const { response, chatHistory } = await sendChatMessage({ message }).then((response) => {
+        closeModal({ id: "loading-modal" });
+        return response;
+      });
+      setGptData({ data: enhanceWithTotalizers(response as MealsResponse), chatHistory });
+    } catch (error) {
       closeModal({ id: "loading-modal" });
-      return response;
-    });
-
-    setGptData({ data: enhanceWithTotalizers(response as MealsResponse), chatHistory });
+      // Opcional: adicionar feedback de erro para o usuário
+    }
   }
 
   const handleChangeClick = async (food: string, meal: string) => {
     openModal({ id: "loading-modal" });
-
-    const message = `Troque o item ${food} da refeição ${meal} por algo equivalente. As unidades da resposta devem ser gramas e calorias e ela deve ser apenas esse alimento neste formato (JSON): {alimento: ,quantidade: ,proteina: ,carboidrato: ,gordura: ,calorias: }.`;
-    const { response, chatHistory } = await sendChatMessage({ message, previousDialog: gptData?.chatHistory }).then((response) => {
+    try {
+      const message = `Troque o item ${food} da refeição ${meal} por algo equivalente. As unidades da resposta devem ser gramas e calorias e ela deve ser apenas esse alimento neste formato (JSON): {alimento: ,quantidade: ,proteina: ,carboidrato: ,gordura: ,calorias: }.`;
+      const { response, chatHistory } = await sendChatMessage({ message, previousDialog: gptData?.chatHistory }).then((response) => {
+        closeModal({ id: "loading-modal" });
+        return response;
+      });
+      const selectedMealIndex = gptData.data.refeicoes.findIndex((m) => m.refeicao === meal);
+      const selectedFoodIndex = gptData.data.refeicoes[selectedMealIndex].alimentos.findIndex((f) => f.alimento === food);
+      const foodResponse = response as MealsResponse['refeicoes'][0]['alimentos'][0];
+      gptData.data.refeicoes[selectedMealIndex].alimentos[selectedFoodIndex] = {
+        alimento: foodResponse.alimento,
+        calorias: toCalories(removeUnity(foodResponse.calorias)),
+        carboidrato: toGrams(removeUnity(foodResponse.carboidrato)),
+        gordura: toGrams(removeUnity(foodResponse.gordura)),
+        proteina: toGrams(removeUnity(foodResponse.proteina)),
+        quantidade: foodResponse.quantidade,
+      };
+      gptData.data = enhanceWithTotalizers(gptData.data);
+      setGptData({ data: gptData.data, chatHistory });
+    } catch (error) {
       closeModal({ id: "loading-modal" });
-      return response;
-    });
-
-    const selectedMealIndex = gptData.data.refeicoes.findIndex((m) => m.refeicao === meal);
-    const selectedFoodIndex = gptData.data.refeicoes[selectedMealIndex].alimentos.findIndex((f) => f.alimento === food);
-
-    const foodResponse = response as MealsResponse['refeicoes'][0]['alimentos'][0];
-    gptData.data.refeicoes[selectedMealIndex].alimentos[selectedFoodIndex] = {
-      alimento: foodResponse.alimento,
-      calorias: toCalories(removeUnity(foodResponse.calorias)),
-      carboidrato: toGrams(removeUnity(foodResponse.carboidrato)),
-      gordura: toGrams(removeUnity(foodResponse.gordura)),
-      proteina: toGrams(removeUnity(foodResponse.proteina)),
-      quantidade: foodResponse.quantidade,
-    };
-    gptData.data = enhanceWithTotalizers(gptData.data);
-    
-    setGptData({ data: gptData.data, chatHistory });
+      // Opcional: adicionar feedback de erro para o usuário
+    }
   }
 
   const handleDetailClick = async (food: string, meal: string) => {

@@ -8,6 +8,12 @@ jest.mock('../../app/components/WaterSettings', () => ({
   WaterSettings: () => <div data-testid="water-settings">WaterSettings</div>,
 }));
 
+const MockBarChart = () => <div data-testid="bar-chart">BarChart</div>;
+MockBarChart.displayName = 'MockBarChart';
+jest.mock('../../app/components/BarChart', () => MockBarChart);
+
+jest.mock('../../app/components/CircularLoading', () => ({ CircularLoading: () => <div data-testid="loading" /> }));
+
 // eslint-disable-next-line @next/next/no-img-element
 jest.mock('next/image', () => {
   const Img = (props: any) => <img {...props} alt={props.alt || ''} />;
@@ -45,5 +51,11 @@ describe('Componente WaterSection', () => {
     expect(screen.getByText('1000ml')).toBeInTheDocument();
     expect(screen.getByText('Meta')).toBeInTheDocument();
     expect(screen.getByText('3000ml')).toBeInTheDocument();
+  });
+
+  it('deve renderizar os botões de incremento e decremento', () => {
+    render(<WaterSection />);
+    expect(screen.getAllByText('-')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('+')[0]).toBeInTheDocument();
   });
 }); 
